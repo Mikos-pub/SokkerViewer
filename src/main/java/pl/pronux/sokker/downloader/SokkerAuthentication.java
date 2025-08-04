@@ -154,7 +154,7 @@ v	 */
 
 		try {
 			this.message = postDataToPage(
-										  "http://217.17.40.90/start.php?session=xml", "ilogin=" + URLEncoder.encode(login, "UTF-8") + "&ipassword=" + URLEncoder.encode(password, "UTF-8"), "http://online.sokker.org/xmlinfo.php");      
+										  "https://sokker.org/start.php?session=xml", "ilogin=" + URLEncoder.encode(login, "UTF-8") + "&ipassword=" + URLEncoder.encode(password, "UTF-8"), "https://sokker.org/xmlinfo.php");
 		} catch (UnsupportedEncodingException e) {
 			this.status = SokkerAuthentication.FAILED;
 			this.errorno = Synchronizer.ERROR_MESSAGE_NULL;

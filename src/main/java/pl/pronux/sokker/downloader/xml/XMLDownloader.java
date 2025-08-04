@@ -6,7 +6,7 @@ import pl.pronux.sokker.downloader.SokkerAuthentication;
 
 public class XMLDownloader extends SokkerAuthentication {
 
-	private final static String SOKKER_URL = "http://online.sokker.org/xml/";
+	private final static String SOKKER_URL = "https://sokker.org/xml/";
 	
 	public XMLDownloader() {
 	}

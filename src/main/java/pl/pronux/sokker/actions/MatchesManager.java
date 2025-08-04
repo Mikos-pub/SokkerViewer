@@ -119,7 +119,7 @@ public final class MatchesManager {
 		// download xmls
 		try {
 			if (downloader.getStatus().equals("OK")) { 
-				if (matchId.matches("[0-9]+") || matchId.matches("http://online\\.sokker\\.org/comment\\.php\\?matchID=[0-9]+")) {  
+				if (matchId.matches("[0-9]+") || matchId.matches("https://sokker\\.org/comment\\.php\\?matchID=[0-9]+")) {  
 					SQLSession.connect();
 					MatchXmlManager manager = new MatchXmlManager(destination, downloader, Cache.getDate());
 					manager.download(Integer.valueOf(matchId.replaceAll("[^0-9]", "")));  
