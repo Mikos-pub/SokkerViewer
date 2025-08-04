@@ -1,3 +1,13 @@
+How to build (on Windows, for Windows):
+1. Download and unpack Apache Maven (version 3.9.11 worked for me), add bin directory to PATH (or use absolute path when calling mvn later)
+2. Install Java SE Development Kit (version 24.0.2 worked for me)
+3. Git clone this repository
+4. Run this command in cmd while in repository (use absolute path to mvn if you didn't add it to PATH):
+mvn clean package
+5. If the build was successful the files should be in packages\windows\sokker, zip in packages\release\stable\windows
+
+------------------
+
 kroki do wykonania przed wydaniem rewizji
 
 * zmiana w interfejsie SV
