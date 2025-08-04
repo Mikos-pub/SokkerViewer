@@ -5,15 +5,15 @@
     </description>
 
 	<property name="user.name" value="Radoslaw Rymaszewski" />
-	<property name="version" value="0.13.3" />
+	<property name="version" value="0.14" />
 	<!-- windows; linux; mac -->
-	<property name="os.name.value" value="linux" />
+	<property name="os.name.value" value="windows" />
 	<!-- testing or stable -->
 	<property name="software.type" value="stable" />
 
 	<property name="resources" value="src/main/resources/" />
 
-	<property name="itext" value="itext-1.4.2.jar" />
+	<property name="itext" value="itext-1.4.8.jar" />
 	<property name="htmlentities" value="htmlentities-1.0.0.jar" />
 	<property name="jfreechart" value="jfreechart-1.0.1.jar" />
 	<property name="jcommon" value="jcommon-1.0.0.jar" />
@@ -201,9 +201,11 @@
 	</target>
 
 	<target name="packages" depends="zip">
+		<!--
 		<get src="http://www.sokkerviewer.net/sv/updates/${software.type}/${os.name.value}/packages.xml" dest="packages/${software.type}/${os.name.value}/packages.xml" />
 		<get src="http://www.sokkerviewer.net/sv/updates/${software.type}/${os.name.value}/packages.xml.md5" dest="packages/${software.type}/${os.name.value}/packages.xml.md5" />
 		<get src="http://www.sokkerviewer.net/sv/updates/${software.type}/${os.name.value}/packages.xml" dest="packages/${os.name.value}/sokker/packages.xml" />
+		-->
 		<copy todir="${packages.dst.dir}">
 			<fileset dir="${lib.dst.dir}">
 				<include name="${itext}" />

@@ -4,52 +4,56 @@
 	<groupId>SokkerViewer</groupId>
 	<artifactId>SokkerViewer</artifactId>
 	<name>SokkerViewer</name>
-	<version>0.13.3</version>
+	<version>0.14</version>
 	<properties>
-		<swt.version>4.2.1</swt.version>
-		<swt.os-specific-dep>org.eclipse.swt.gtk.linux.x86</swt.os-specific-dep>
+		<swt.version>3.130.0</swt.version>
+		<swt.os-specific-dep>org.eclipse.swt.win32.win32.x86_64</swt.os-specific-dep>
 	</properties>
 	<repositories>
 		<repository>
-			<id>SokkerViewer</id>
-			<name>SokkerViewer.repository</name>
-			<url>http://www.sokkerviewer.net/repo</url>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 		<repository>
-			<id>swt-repo</id>
-			<url>https://swt-repo.googlecode.com/svn/repo/</url>
+			<id>terrestris</id>
+			<url>https://nexus.terrestris.de/repository/public/</url>
+		</repository>
+		<repository>
+			<id>htmlentities-repo</id>
+			<url>https://sic.ctti.extranet.gencat.cat/nexus/repository/public/</url>
 		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+		  <groupId>org.eclipse.platform</groupId>
+		  <artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+		  <version>3.130.0</version>
+		</dependency>
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>htmlentities</groupId>
-			<artifactId>htmlentities</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>itext</groupId>
+			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
-			<version>1.4.2</version>
+			<version>1.4.8</version>
 		</dependency>
 		<dependency>
-			<groupId>jcommon</groupId>
+			<groupId>jfree</groupId>
 			<artifactId>jcommon</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>jfreechart</groupId>
+			<groupId>jfree</groupId>
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.swt</groupId>
-			<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
-			<version>4.2.1</version>
+			<groupId>com.tecnick.htmlutils</groupId>
+			<artifactId>htmlentities</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 	<profiles>
@@ -74,7 +78,7 @@
 				</os>
 			</activation>
 			<properties>
-				<swt.os-specific-dep>swt-win32</swt.os-specific-dep>
+				<swt.os-specific-dep>org.eclipse.swt.win32.win32.x86_64</swt.os-specific-dep>
 				<sv.os.type name="os.name.value">windows</sv.os.type>
 			</properties>
 		</profile>
@@ -101,7 +105,7 @@
 		<profile>
 			<id>windows-x86_64</id>
 			<properties>
-				<swt.os-specific-dep>swt-win32-x86_64</swt.os-specific-dep>
+				<swt.os-specific-dep>org.eclipse.swt.win32.win32.x86_64</swt.os-specific-dep>
 				<sv.os.type name="os.name.value">windows-x86_64</sv.os.type>
 			</properties>
 		</profile>
@@ -118,11 +122,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
+				  <version>3.11.0</version>
+				  <configuration>
+					<source>8</source>
+					<target>8</target>
+				  </configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
