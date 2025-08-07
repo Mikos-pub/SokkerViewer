@@ -72,15 +72,11 @@ public class Junior extends Person {
 		if (this.averagePops == null) {
 			int jump = 0;
 			int lastJump = 0;
-			double firstJump = 0;
 
 			lastJump = skills[0].getWeeks();
 
 			for (int j = 0; j < skills.length - 1; j++) {
 				if (skills[j].getSkill() < skills[j + 1].getSkill()) {
-					if (jump == 0) {
-						firstJump = skills[j + 1].getWeeks();
-					}
 					jump++;
 					lastJump = skills[j + 1].getWeeks();
 				}
@@ -89,38 +85,38 @@ public class Junior extends Person {
 			setLastPop(lastJump);
 			setPops(jump);
 
-			if (jump > 1) {
-				if (lastJump + 1 - skills[skills.length - 1].getWeeks() > ((firstJump - lastJump) / (jump - 1))) {
-					setAveragePops((firstJump + 1 - skills[skills.length - 1]
-							.getWeeks()) / jump);
-				} else {
-					setAveragePops((firstJump - lastJump) / --jump);
+			// talent ("averagePops") is  calculated from slope of linear regression
+
+			double averagePops = 3.0;
+
+			if (skills.length > 1) {
+				double xSum = 0.0;
+				double ySum = 0.0;
+				double xySum = 0.0;
+				double x2Sum = 0.0;
+				for (int j = 0; j < skills.length; j++) {
+					double x = skills[j].getWeeks();
+					double y = skills[j].getSkill();
+
+					xSum += x;
+					ySum += y;
+					xySum += x * y;
+					x2Sum += x * x;
 				}
-			} else {
-				if (jump == 1) {
-					Double weeksDiff1 = Double.valueOf(lastJump
-							- skills[skills.length - 1].getWeeks() + 1);
-					Double weeksDiff2 = Double.valueOf(skills[0].getWeeks()
-							- lastJump);
-					if (weeksDiff1 >= getMinimumPop() || weeksDiff2 > getMinimumPop()) {
-						if (weeksDiff1 > weeksDiff2) {
-							setAveragePops(weeksDiff1);
-						} else {
-							setAveragePops(weeksDiff2);
-						}
-					} else {
-						setAveragePops(getMinimumPop());
-					}
-				} else {
-					int weeksDiff = skills[0].getWeeks()
-							- skills[skills.length - 1].getWeeks();
-					if (weeksDiff >= getMinimumPop()) {
-						setAveragePops(Double.valueOf(weeksDiff + 1));
-					} else {
-						setAveragePops(getMinimumPop());
-					}
+				double n = skills.length;
+				averagePops = (n * xySum - xSum * ySum)
+						/ (n * x2Sum - xSum * xSum);
+				averagePops = -1.0 / averagePops;
+				if (averagePops < 3.0) {
+					averagePops = 3.0;
+				}
+				if (averagePops > 30.0) {
+					averagePops = 30.0;
 				}
 			}
+
+			setAveragePops(averagePops);
+			
 			return getAveragePops();
 		} else {
 			return averagePops;
