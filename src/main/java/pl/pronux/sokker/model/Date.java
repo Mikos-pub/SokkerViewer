@@ -219,10 +219,6 @@ public class Date implements Serializable, DateConst, Comparable<Date> {
 			long begin;
 			long offset;
 			int week = 0;
-			// if(sokkerDate.getDay() >= SokkerDate.THURSDAY && sokkerDate.getDay() <=
-			// SokkerDate.FRIDAY) {
-			// if(sokkerDate.getDay() >= firstDay && sokkerDate.getDay() <=
-			// SokkerDate.FRIDAY) {
 			if (sokkerDate.getDay() < firstDay) {
 				week = sokkerDate.getWeek() - 1;
 			} else {
@@ -233,6 +229,12 @@ public class Date implements Serializable, DateConst, Comparable<Date> {
 			Calendar ca2 = Calendar.getInstance();
 			ca1.setTimeInMillis(begin);
 			ca2.setTimeInMillis(begin + Date.WEEK * week + firstDay * Date.DAY);
+
+			// Add a week if the date is after 2025-07-30 - fix for a week long pause in sokker
+			if (ca2.getTimeInMillis() > 1753833600000l) {
+				ca2.setTimeInMillis(ca2.getTimeInMillis() + Date.WEEK);
+			}
+
 			offset = ca2.get(Calendar.DST_OFFSET) - ca1.get(Calendar.DST_OFFSET);
 			ca2.setTimeInMillis(ca2.getTimeInMillis() - offset);
 			trainingDate = new Date(ca2);
