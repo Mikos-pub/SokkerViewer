@@ -18,6 +18,7 @@ import pl.pronux.sokker.model.League;
 import pl.pronux.sokker.model.Player;
 import pl.pronux.sokker.model.PlayerStats;
 import pl.pronux.sokker.model.SVNumberFormat;
+import pl.pronux.sokker.model.SokkerDate;
 import pl.pronux.sokker.resources.Messages;
 import pl.pronux.sokker.ui.beans.Colors;
 import pl.pronux.sokker.ui.beans.ConfigBean;
@@ -29,6 +30,15 @@ import pl.pronux.sokker.ui.resources.ImageResources;
 import pl.pronux.sokker.ui.widgets.interfaces.IViewSort;
 
 public class PlayersTable extends SVTable<Player> implements IViewSort<Player> {
+	
+	public static final int MATCH_INDEX_1ST = 24;
+	public static final int MATCH_INDEX_2ND = MATCH_INDEX_1ST + 1;
+	public static final int MATCH_INDEX_3RD = MATCH_INDEX_2ND + 1;
+
+	public static final int MATCH_INDEX_1ST_NEXT = 28;
+	public static final int MATCH_INDEX_2ND_NEXT = MATCH_INDEX_1ST_NEXT + 1;
+	public static final int MATCH_INDEX_3RD_NEXT = MATCH_INDEX_2ND_NEXT + 1;
+
 	private PlayerComparator comparator;
 	
 	public PlayersTable(Composite parent, int style) {
@@ -69,6 +79,11 @@ public class PlayersTable extends SVTable<Player> implements IViewSort<Player> {
 				Messages.getString("table.note.short"), 
 				Messages.getString("table.1st"), 
 				Messages.getString("table.2nd"), 
+				Messages.getString("table.3rd"), 
+				Messages.getString("table.nextTraining"), 
+				Messages.getString("table.1st"), 
+				Messages.getString("table.2nd"), 
+				Messages.getString("table.3rd"), 
 				"" 
 		};
 
@@ -171,43 +186,89 @@ public class PlayersTable extends SVTable<Player> implements IViewSort<Player> {
 			if (player.getPlayerMatchStatistics() != null) {
 				int week = Cache.getDate().getSokkerDate().getWeek();
 				for (PlayerStats playerStats : player.getPlayerMatchStatistics()) {
-					if (playerStats.getMatch().getWeek() == week) {
+					if ((playerStats.getMatch().getWeek() == week && playerStats.getMatch().getDay() < 6) ||
+						(playerStats.getMatch().getWeek() == week - 1 && playerStats.getMatch().getDay() == 6)) {
+						
 						if (playerStats.getFormation() >= 0 && playerStats.getFormation() <= 4 && playerStats.getTimePlayed() > 0) {
 							League league = playerStats.getMatch().getLeague();
+							int matchDay = playerStats.getMatch().getDay();
 
-							if ((league.getType() == League.TYPE_LEAGUE || league.getType() == League.TYPE_PLAYOFF) && league.getIsOfficial() == League.OFFICIAL) {
-								item.setFont(PlayerComparator.MATCH_SUNDAY, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(PlayerComparator.MATCH_SUNDAY).getFontData()));
-								item.setText(PlayerComparator.MATCH_SUNDAY, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()), playerStats.getTimePlayed()));  
-								if (playerStats.getFormation() == PlayerStats.GK) {
-									item.setBackground(PlayerComparator.MATCH_SUNDAY, Colors.getPositionGK());
-								} else if (playerStats.getFormation() == PlayerStats.DEF) {
-									item.setBackground(PlayerComparator.MATCH_SUNDAY, Colors.getPositionDEF());
-								} else if (playerStats.getFormation() == PlayerStats.MID) {
-									item.setBackground(PlayerComparator.MATCH_SUNDAY, Colors.getPositionMID());
-								} else if (playerStats.getFormation() == PlayerStats.ATT) {
-									item.setBackground(PlayerComparator.MATCH_SUNDAY, Colors.getPositionATT());
+							int idx = 0;
+							if (matchDay == 6) {
+								idx = MATCH_INDEX_1ST;
+							} else if (matchDay == 1) {
+								idx = MATCH_INDEX_2ND;
+							} else if (matchDay == 4) {
+								idx = MATCH_INDEX_3RD;
+							}
+
+							if (idx > 0) {
+								if ((league.getType() == League.TYPE_LEAGUE || league.getType() == League.TYPE_PLAYOFF) && league.getIsOfficial() == League.OFFICIAL) {
+									item.setFont(idx, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(idx).getFontData()));
 								}
-							} else {
-								if (league.getIsOfficial() == League.OFFICIAL) {
-									item.setFont(PlayerComparator.MATCH_WEDNESDAY, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(PlayerComparator.MATCH_SUNDAY).getFontData()));
-								}
-								item.setText(PlayerComparator.MATCH_WEDNESDAY, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()), playerStats.getTimePlayed()));  
+								item.setText(idx, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()) , playerStats.getTimePlayed()));
 								if (playerStats.getFormation() == PlayerStats.GK) {
-									item.setBackground(PlayerComparator.MATCH_WEDNESDAY, Colors.getPositionGK());
+									item.setBackground(idx, Colors.getPositionGK());
 								} else if (playerStats.getFormation() == PlayerStats.DEF) {
-									item.setBackground(PlayerComparator.MATCH_WEDNESDAY, Colors.getPositionDEF());
+									item.setBackground(idx, Colors.getPositionDEF());
 								} else if (playerStats.getFormation() == PlayerStats.MID) {
-									item.setBackground(PlayerComparator.MATCH_WEDNESDAY, Colors.getPositionMID());
+									item.setBackground(idx, Colors.getPositionMID());
 								} else if (playerStats.getFormation() == PlayerStats.ATT) {
-									item.setBackground(PlayerComparator.MATCH_WEDNESDAY, Colors.getPositionATT());
+									item.setBackground(idx, Colors.getPositionATT());
 								}
 							}
+							
 						}
 					}
 				}
 			} else {
-				item.setText(c++, ""); 
-				item.setText(c++, ""); 
+				item.setText(MATCH_INDEX_1ST, ""); 
+				item.setText(MATCH_INDEX_2ND, ""); 
+				item.setText(MATCH_INDEX_3RD, ""); 
+			}
+
+			if (player.getPlayerMatchStatistics() != null) {
+				int week = Cache.getDate().getSokkerDate().getWeek();
+				for (PlayerStats playerStats : player.getPlayerMatchStatistics()) {
+					if ((playerStats.getMatch().getWeek() == week + 1 && playerStats.getMatch().getDay() < 6) ||
+						(playerStats.getMatch().getWeek() == week && playerStats.getMatch().getDay() == 6)) {
+						
+						if (playerStats.getFormation() >= 0 && playerStats.getFormation() <= 4 && playerStats.getTimePlayed() > 0) {
+							League league = playerStats.getMatch().getLeague();
+							int matchDay = playerStats.getMatch().getDay();
+
+							int idx = 0;
+							if (matchDay == 6) {
+								idx = MATCH_INDEX_1ST_NEXT;
+							} else if (matchDay == 1) {
+								idx = MATCH_INDEX_2ND_NEXT;
+							} else if (matchDay == 4) {
+								idx = MATCH_INDEX_3RD_NEXT;
+							}
+
+							if (idx > 0) {
+								if ((league.getType() == League.TYPE_LEAGUE || league.getType() == League.TYPE_PLAYOFF) && league.getIsOfficial() == League.OFFICIAL) {
+									item.setFont(idx, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(idx).getFontData()));
+								}
+								item.setText(idx, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()) , playerStats.getTimePlayed()));
+								if (playerStats.getFormation() == PlayerStats.GK) {
+									item.setBackground(idx, Colors.getPositionGK());
+								} else if (playerStats.getFormation() == PlayerStats.DEF) {
+									item.setBackground(idx, Colors.getPositionDEF());
+								} else if (playerStats.getFormation() == PlayerStats.MID) {
+									item.setBackground(idx, Colors.getPositionMID());
+								} else if (playerStats.getFormation() == PlayerStats.ATT) {
+									item.setBackground(idx, Colors.getPositionATT());
+								}
+							}
+							
+						}
+					}
+				}
+			} else {
+				item.setText(MATCH_INDEX_1ST_NEXT, ""); 
+				item.setText(MATCH_INDEX_2ND_NEXT, ""); 
+				item.setText(MATCH_INDEX_3RD_NEXT, ""); 
 			}
 			
 			if (max > 0) {

@@ -28,6 +28,10 @@ import pl.pronux.sokker.ui.widgets.interfaces.IViewSort;
 
 public class AssistantPlayersTable extends SVTable<Player> implements IViewSort<Player> {
 
+	public static final int MATCH_INDEX_1ST = 14;
+	public static final int MATCH_INDEX_2ND = MATCH_INDEX_1ST + 1;
+	public static final int MATCH_INDEX_3RD = MATCH_INDEX_2ND + 1;
+
 	private PlayerAssistantComparator comparator;
 	
 	private List<Player> players = new ArrayList<Player>();
@@ -70,6 +74,7 @@ public class AssistantPlayersTable extends SVTable<Player> implements IViewSort<
 				Messages.getString("table.position.best"), 
 				Messages.getString("table.1st"), //$NON-NLS-1$
 				Messages.getString("table.2nd"), //$NON-NLS-1$
+				Messages.getString("table.3rd"), //$NON-NLS-1$
 				"" 
 		};
 		
@@ -195,44 +200,45 @@ public class AssistantPlayersTable extends SVTable<Player> implements IViewSort<
 			if (player.getPlayerMatchStatistics() != null) {
 				int week = Cache.getDate().getSokkerDate().getWeek();
 				for (PlayerStats playerStats : player.getPlayerMatchStatistics()) {
-					if (playerStats.getMatch().getWeek() == week) {
+					if ((playerStats.getMatch().getWeek() == week && playerStats.getMatch().getDay() < 6) ||
+						(playerStats.getMatch().getWeek() == week - 1 && playerStats.getMatch().getDay() == 6)) {
+						
 						if (playerStats.getFormation() >= 0 && playerStats.getFormation() <= 4 && playerStats.getTimePlayed() > 0) {
 							League league = playerStats.getMatch().getLeague();
+							int matchDay = playerStats.getMatch().getDay();
 
-							if ((league.getType() == League.TYPE_LEAGUE || league.getType() == League.TYPE_PLAYOFF) && league.getIsOfficial() == League.OFFICIAL) {
-								item.setFont(idx+0, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(idx+0).getFontData()));
-								item.setText(idx+0, String.format("%s (%d' - %d%%)", Messages.getString("formation." + playerStats.getFormation()), playerStats.getTimePlayed(), playerStats.getRating())); //$NON-NLS-1$ //$NON-NLS-2$
-								if (playerStats.getFormation() == PlayerStats.GK) {
-									item.setBackground(idx+0, Colors.getPositionGK());
-								} else if (playerStats.getFormation() == PlayerStats.DEF) {
-									item.setBackground(idx+0, Colors.getPositionDEF());
-								} else if (playerStats.getFormation() == PlayerStats.MID) {
-									item.setBackground(idx+0, Colors.getPositionMID());
-								} else if (playerStats.getFormation() == PlayerStats.ATT) {
-									item.setBackground(idx+0, Colors.getPositionATT());
+							int matchIndex = 0;
+							if (matchDay == 6) {
+								matchIndex = MATCH_INDEX_1ST;
+							} else if (matchDay == 1) {
+								matchIndex = MATCH_INDEX_2ND;
+							} else if (matchDay == 4) {
+								matchIndex = MATCH_INDEX_3RD;
+							}
+
+							if (matchIndex > 0) {
+								if ((league.getType() == League.TYPE_LEAGUE || league.getType() == League.TYPE_PLAYOFF) && league.getIsOfficial() == League.OFFICIAL) {
+									item.setFont(matchIndex, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(matchIndex).getFontData()));
 								}
-							} else {
-								if (league.getIsOfficial() == League.OFFICIAL) {
-									item.setFont(idx+1, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(idx+0).getFontData()));
-								}
-								//item.setText(c+1, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()), playerStats.getTimePlayed())); //$NON-NLS-1$ //$NON-NLS-2$
-								item.setText(idx+1, String.format("%s (%d' - %d%%)", Messages.getString("formation." + playerStats.getFormation()), playerStats.getTimePlayed(), playerStats.getRating())); //$NON-NLS-1$ //$NON-NLS-2$
+								item.setText(matchIndex, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()) , playerStats.getTimePlayed()));
 								if (playerStats.getFormation() == PlayerStats.GK) {
-									item.setBackground(idx+1, Colors.getPositionGK());
+									item.setBackground(matchIndex, Colors.getPositionGK());
 								} else if (playerStats.getFormation() == PlayerStats.DEF) {
-									item.setBackground(idx+1, Colors.getPositionDEF());
+									item.setBackground(matchIndex, Colors.getPositionDEF());
 								} else if (playerStats.getFormation() == PlayerStats.MID) {
-									item.setBackground(idx+1, Colors.getPositionMID());
+									item.setBackground(matchIndex, Colors.getPositionMID());
 								} else if (playerStats.getFormation() == PlayerStats.ATT) {
-									item.setBackground(idx+1, Colors.getPositionATT());
+									item.setBackground(matchIndex, Colors.getPositionATT());
 								}
 							}
+							
 						}
 					}
 				}
 			} else {
-				item.setText(idx++, "[1]"); //$NON-NLS-1$
-				item.setText(idx++, "[2]"); //$NON-NLS-1$
+				item.setText(MATCH_INDEX_1ST, "[1]"); 
+				item.setText(MATCH_INDEX_2ND, "[2]"); 
+				item.setText(MATCH_INDEX_3RD, "[3]"); 
 			}
         }
 		// Turn drawing back on

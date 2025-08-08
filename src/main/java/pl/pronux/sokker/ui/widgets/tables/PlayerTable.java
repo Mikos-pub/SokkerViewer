@@ -50,6 +50,10 @@ public class PlayerTable extends SVTable<Player> {
 	
 	public static final int SCORER = 14;
 	
+	public static final int MATCH_INDEX_1ST = 20;
+	public static final int MATCH_INDEX_2ND = MATCH_INDEX_1ST + 1;
+	public static final int MATCH_INDEX_3RD = MATCH_INDEX_2ND + 1;
+	
 	
 	public PlayerTable(Composite parent, int style) {
 		super(parent, style);
@@ -81,6 +85,7 @@ public class PlayerTable extends SVTable<Player> {
 				Messages.getString("table.training.type"), 
 				Messages.getString("table.1st"), 
 				Messages.getString("table.2nd"), 
+				Messages.getString("table.3rd"), 
 				"" 
 		};
 		for (int j = 0; j < titles.length; j++) {
@@ -145,57 +150,47 @@ public class PlayerTable extends SVTable<Player> {
 			if (player.getPlayerMatchStatistics() != null) {
 				int week = player.getSkills()[i].getDate().getTrainingDate(SokkerDate.THURSDAY).getSokkerDate().getWeek();
 				for (PlayerStats playerStats : player.getPlayerMatchStatistics()) {
-					if (playerStats.getMatch().getWeek() == week) {
+					if ((playerStats.getMatch().getWeek() == week && playerStats.getMatch().getDay() < 6) ||
+						(playerStats.getMatch().getWeek() == week - 1 && playerStats.getMatch().getDay() == 6)) {
+						
 						if (playerStats.getFormation() >= 0 && playerStats.getFormation() <= 4 && playerStats.getTimePlayed() > 0) {
 							League league = playerStats.getMatch().getLeague();
+							int matchDay = playerStats.getMatch().getDay();
 
-							if ((league.getType() == League.TYPE_LEAGUE || league.getType() == League.TYPE_PLAYOFF) && league.getIsOfficial() == League.OFFICIAL) {
-								item.setFont(20, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(20).getFontData()));
-								item.setText(20, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()) , playerStats.getTimePlayed()));  
-//								if(league.getType() == League.TYPE_LEAGUE) {
-//									item.setImage(18, ImageResources.getImageResources("league.png"));
-//								} else if(league.getType() == League.TYPE_PLAYOFF) {
-//									item.setImage(18, ImageResources.getImageResources("playoff.png"));
-//								}
+							int idx = 0;
+							if (matchDay == 6) {
+								idx = MATCH_INDEX_1ST;
+							} else if (matchDay == 1) {
+								idx = MATCH_INDEX_2ND;
+							} else if (matchDay == 4) {
+								idx = MATCH_INDEX_3RD;
+							}
+
+							if (idx > 0) {
+								if ((league.getType() == League.TYPE_LEAGUE || league.getType() == League.TYPE_PLAYOFF) && league.getIsOfficial() == League.OFFICIAL) {
+									item.setFont(idx, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(idx).getFontData()));
+								}
+								item.setText(idx, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()) , playerStats.getTimePlayed()));
 								if (playerStats.getFormation() == PlayerStats.GK) {
-									item.setBackground(20, Colors.getPositionGK());
+									item.setBackground(idx, Colors.getPositionGK());
 								} else if (playerStats.getFormation() == PlayerStats.DEF) {
-									item.setBackground(20, Colors.getPositionDEF());
+									item.setBackground(idx, Colors.getPositionDEF());
 								} else if (playerStats.getFormation() == PlayerStats.MID) {
-									item.setBackground(20, Colors.getPositionMID());
+									item.setBackground(idx, Colors.getPositionMID());
 								} else if (playerStats.getFormation() == PlayerStats.ATT) {
-									item.setBackground(20, Colors.getPositionATT());
+									item.setBackground(idx, Colors.getPositionATT());
 								}
-
-							} else {
-								c++;
-								if (league.getIsOfficial() == League.OFFICIAL) {
-									item.setFont(21, Fonts.getBoldFont(DisplayHandler.getDisplay(), item.getFont(21).getFontData()));
-//									item.setImage(19, ImageResources.getImageResources("cup.png"));
-								}
-								if (playerStats.getFormation() == PlayerStats.GK) {
-								item.setBackground(21, Colors.getPositionGK());
-							} else if (playerStats.getFormation() == PlayerStats.DEF) {
-								item.setBackground(21, Colors.getPositionDEF());
-							} else if (playerStats.getFormation() == PlayerStats.MID) {
-								item.setBackground(21, Colors.getPositionMID());
-							} else if (playerStats.getFormation() == PlayerStats.ATT) {
-								item.setBackground(21, Colors.getPositionATT());
 							}
-								item.setText(21, String.format("%s (%d')", Messages.getString("formation." + playerStats.getFormation()) , playerStats.getTimePlayed()));  
-//								if(league.getType() == League.TYPE_LEAGUE) {
-//									item.setImage(19, ImageResources.getImageResources("friendly_league.png"));
-//								} else if(league.getType() == League.TYPE_FRIENDLY_MATCH) {
-//									item.setImage(19, ImageResources.getImageResources("friendly_match.png"));
-//								}
-							}
+							
 						}
 					}
 				}
 			} else {
-				item.setText(20, ""); 
-				item.setText(21, ""); 
+				item.setText(MATCH_INDEX_1ST, ""); 
+				item.setText(MATCH_INDEX_2ND, ""); 
+				item.setText(MATCH_INDEX_3RD, ""); 
 			}
+
 			if (i > 0) {
 				PlayerSkills now = player.getSkills()[i];
 				PlayerSkills before = player.getSkills()[i - 1];
