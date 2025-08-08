@@ -16,49 +16,45 @@ public class PlayerComparator implements SVComparator<Player>, Sort {
 	
 	public static final int HEIGHT = 3; 
 
-	public static final int WEIGHT = 4;
+	//public static final int WEIGHT = 4;
 	
-	public static final int BMI = 5;
+	//public static final int BMI = 5;
 	
-	public static final int VALUE = 6;
+	public static final int VALUE = 4;
 
-	public static final int SALARY = 7;
+	public static final int SALARY = 5;
 
-	public static final int AGE = 8;
+	public static final int AGE = 6;
 
-	public static final int FORM = 9;
+	public static final int FORM = 7;
 
-	public static final int STAMINA = 10;
+	public static final int STAMINA = 8;
 
-	public static final int PACE = 11;
+	public static final int PACE = 9;
 
-	public static final int TECHNIQUE = 12;
+	public static final int TECHNIQUE = 10;
 
-	public static final int PASSING = 13;
+	public static final int PASSING = 11;
 
-	public static final int KEEPER = 14;
+	public static final int KEEPER = 12;
 
-	public static final int DEFENDER = 15;
+	public static final int DEFENDER = 13;
 
-	public static final int PLAYMAKER = 16;
+	public static final int PLAYMAKER = 14;
 
-	public static final int SCORER = 17;
+	public static final int SCORER = 15;
 
-	public static final int DISCIPLINE = 18;
+	public static final int DISCIPLINE = 16;
 
-	public static final int EXPERIENCE = 19;
+	public static final int EXPERIENCE = 17;
 
-	public static final int TEAMWORK = 20;
+	public static final int TEAMWORK = 18;
 
-	public static final int CARDS = 21;
+	public static final int CARDS = 19;
 
-	public static final int INJURY = 22;
+	public static final int INJURY = 20;
 	
-	public static final int NOTE = 23;
-
-	public static final int MATCH_SUNDAY = 24;
-
-	public static final int MATCH_WEDNESDAY = 25;
+	public static final int NOTE = 21;
 
 	private int column;
 
@@ -93,12 +89,12 @@ public class PlayerComparator implements SVComparator<Player>, Sort {
 		case HEIGHT:
 			rc = p1.getHeight() < p2.getHeight() ? -1 : 1;
 			break;
-		case WEIGHT:
-			rc = p1.getSkills()[p1.getSkills().length - 1].getWeight() < p2.getSkills()[p2.getSkills().length - 1].getWeight() ? -1 : 1;
-			break;
-		case BMI:
-			rc = p1.getSkills()[p1.getSkills().length - 1].getBmi() < p2.getSkills()[p2.getSkills().length - 1].getBmi() ? -1 : 1;
-			break;
+		//case WEIGHT:
+		//	rc = p1.getSkills()[p1.getSkills().length - 1].getWeight() < p2.getSkills()[p2.getSkills().length - 1].getWeight() ? -1 : 1;
+		//	break;
+		//case BMI:
+		//	rc = p1.getSkills()[p1.getSkills().length - 1].getBmi() < p2.getSkills()[p2.getSkills().length - 1].getBmi() ? -1 : 1;
+		//	break;
 		case VALUE:
 			rc = p1.getSkills()[p1.getSkills().length - 1].getValue().compareTo(p2.getSkills()[p2.getSkills().length - 1].getValue());
 			break;
@@ -144,11 +140,6 @@ public class PlayerComparator implements SVComparator<Player>, Sort {
 		case TEAMWORK:
 			rc = (p1.getSkills()[p1.getSkills().length - 1].getTeamwork() < p2.getSkills()[p2.getSkills().length - 1].getTeamwork()) ? -1 : 1;
 			break;
-
-		case MATCH_SUNDAY:
-			// rc = coll.compare(p1.getSurname(), p2.getSurname());
-		case MATCH_WEDNESDAY:
-			// rc = coll.compare(p1.getSurname(), p2.getSurname());
 
 		case NOTE:
 			if (p1.getNote() == null && p2.getNote() == null) {
