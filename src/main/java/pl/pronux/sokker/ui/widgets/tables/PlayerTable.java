@@ -50,7 +50,7 @@ public class PlayerTable extends SVTable<Player> {
 	
 	public static final int SCORER = 14;
 	
-	public static final int MATCH_INDEX_1ST = 20;
+	public static final int MATCH_INDEX_1ST = 18;
 	public static final int MATCH_INDEX_2ND = MATCH_INDEX_1ST + 1;
 	public static final int MATCH_INDEX_3RD = MATCH_INDEX_2ND + 1;
 	
@@ -67,8 +67,8 @@ public class PlayerTable extends SVTable<Player> {
 				Messages.getString("table.value"), 
 				Messages.getString("table.salary"), 
 				Messages.getString("table.age"), 
-				Messages.getString("table.weight"),
-				Messages.getString("table.bmi"), 
+				//Messages.getString("table.weight"),
+				//Messages.getString("table.bmi"), 
 				Messages.getString("table.form"), 
 				Messages.getString("table.stamina"), 
 				Messages.getString("table.pace"), 
@@ -121,8 +121,8 @@ public class PlayerTable extends SVTable<Player> {
 			item.setText(c++, player.getSkills()[i].getValue().formatIntegerCurrency());
 			item.setText(c++, player.getSkills()[i].getSalary().formatIntegerCurrency());
 			item.setText(c++, String.valueOf(player.getSkills()[i].getAge()));
-			item.setText(c++, String.valueOf(player.getSkills()[i].getWeight()));
-			item.setText(c++, String.valueOf(player.getSkills()[i].getBmi()));
+			//item.setText(c++, String.valueOf(player.getSkills()[i].getWeight()));
+			//item.setText(c++, String.valueOf(player.getSkills()[i].getBmi()));
 			item.setText(c++, String.valueOf(player.getSkills()[i].getForm()));
 			item.setText(c++, String.valueOf(player.getSkills()[i].getStamina()));
 			item.setText(c++, String.valueOf(player.getSkills()[i].getPace()));
@@ -198,8 +198,8 @@ public class PlayerTable extends SVTable<Player> {
 				compare(now.getValue().toInt(), before.getValue().toInt(), item, idx++);
 				compare(now.getSalary().toInt(), before.getSalary().toInt(), item, idx++);
 				compare(now.getAge(), before.getAge(), item, idx++);
-				compare(now.getWeight(), before.getWeight(), item, idx++);
-				compare(now.getBmi(), before.getBmi(), item, idx++);
+				//compare(now.getWeight(), before.getWeight(), item, idx++);
+				//compare(now.getBmi(), before.getBmi(), item, idx++);
 				compare(now.getForm(), before.getForm(), item, idx++);
 				compare(now.getStamina(), before.getStamina(), item, idx++);
 				compare(now.getPace(), before.getPace(), item, idx++);

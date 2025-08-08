@@ -31,11 +31,11 @@ import pl.pronux.sokker.ui.widgets.interfaces.IViewSort;
 
 public class PlayersTable extends SVTable<Player> implements IViewSort<Player> {
 	
-	public static final int MATCH_INDEX_1ST = 24;
+	public static final int MATCH_INDEX_1ST = 22;
 	public static final int MATCH_INDEX_2ND = MATCH_INDEX_1ST + 1;
 	public static final int MATCH_INDEX_3RD = MATCH_INDEX_2ND + 1;
 
-	public static final int MATCH_INDEX_1ST_NEXT = 28;
+	public static final int MATCH_INDEX_1ST_NEXT = 26;
 	public static final int MATCH_INDEX_2ND_NEXT = MATCH_INDEX_1ST_NEXT + 1;
 	public static final int MATCH_INDEX_3RD_NEXT = MATCH_INDEX_2ND_NEXT + 1;
 
@@ -57,8 +57,8 @@ public class PlayersTable extends SVTable<Player> implements IViewSort<Player> {
 				Messages.getString("table.name"), 
 				Messages.getString("table.surname"), 
 				Messages.getString("table.height"),
-				Messages.getString("table.weight"),
-				Messages.getString("table.bmi"),
+				//Messages.getString("table.weight"),
+				//Messages.getString("table.bmi"),
 				Messages.getString("table.value"), 
 				Messages.getString("table.salary"), 
 				Messages.getString("table.age"), 
@@ -141,8 +141,8 @@ public class PlayersTable extends SVTable<Player> implements IViewSort<Player> {
 			item.setText(c++, player.getName());
 			item.setText(c++, player.getSurname());
 			item.setText(c++, String.valueOf(player.getHeight()));
-			item.setText(c++, String.format("%.2f", player.getSkills()[max].getWeight()));
-			item.setText(c++, String.format("%.2f", player.getSkills()[max].getBmi()));
+			//item.setText(c++, String.format("%.2f", player.getSkills()[max].getWeight()));
+			//item.setText(c++, String.format("%.2f", player.getSkills()[max].getBmi()));
 			item.setText(c++, player.getSkills()[max].getValue().formatIntegerCurrency());
 			item.setText(c++, player.getSkills()[max].getSalary().formatIntegerCurrency());
 			item.setText(c++, String.valueOf(player.getSkills()[max].getAge()));
@@ -272,8 +272,8 @@ public class PlayersTable extends SVTable<Player> implements IViewSort<Player> {
 			}
 			
 			if (max > 0) {
-				this.getChanges(player.getSkills()[max].getWeight(), player.getSkills()[max - 1].getWeight(), item, PlayerComparator.WEIGHT);
-				this.getChanges(player.getSkills()[max].getBmi(), player.getSkills()[max - 1].getBmi(), item, PlayerComparator.BMI);
+				//this.getChanges(player.getSkills()[max].getWeight(), player.getSkills()[max - 1].getWeight(), item, PlayerComparator.WEIGHT);
+				//this.getChanges(player.getSkills()[max].getBmi(), player.getSkills()[max - 1].getBmi(), item, PlayerComparator.BMI);
 				this.getChanges(player.getSkills()[max].getValue().toInt(), player.getSkills()[max - 1].getValue().toInt(), item, PlayerComparator.VALUE);
 				this.getChanges(player.getSkills()[max].getSalary().toInt(), player.getSkills()[max - 1].getSalary().toInt(), item, PlayerComparator.SALARY);
 				this.getChanges(player.getSkills()[max].getAge(), player.getSkills()[max - 1].getAge(), item, PlayerComparator.AGE);
