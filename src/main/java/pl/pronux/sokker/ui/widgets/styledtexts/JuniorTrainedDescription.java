@@ -173,6 +173,12 @@ public class JuniorTrainedDescription extends StyledText implements IDescription
 		for(int i = 0 ; i <= max; i++) {
 			String value = String.valueOf(junior.getSkills()[i].getSkill());
 			text = String.format("%s ", value); 
+			if (i > 0) {
+				int missing_weeks = junior.getSkills()[i - 1].getWeeks() - junior.getSkills()[i].getWeeks() - 1;
+				for (int j = 0; j < missing_weeks; j++) {
+					this.addText("? "); 
+				}
+			}
 			this.addText(text);
 			this.addStyle(this.getText().length() - value.length() - 1, value.length(), ColorResources.getDarkGray(), SWT.NORMAL);
 			if(i > 0 && (junior.getSkills()[i].getSkill() - junior.getSkills()[i-1].getSkill() > 0)) {
